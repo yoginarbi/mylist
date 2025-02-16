@@ -1,6 +1,8 @@
 body {
 	background-image: linear-gradient(100deg, #d4f1ff, #ffffff);
 	font-family: "Roboto", sans-serif;
+	margin: 0;
+	padding: 0;
 }
 h1 {
 	text-align: center;
@@ -10,6 +12,7 @@ h1 {
 	display: flex;
 	justify-content: center;
 	margin-top: 50px;
+	width: 100%;
 }
 #date-time {
 	display: flex;
@@ -24,7 +27,8 @@ h1 {
 }
 form {
 	display: flex;
-	width: 1000px;
+	max-width: 800px;
+	width: 90%;
 }
 form textarea {
 	padding: 10px;
@@ -32,7 +36,7 @@ form textarea {
 	border-top-left-radius: 17px;
 	border-bottom-left-radius: 17px;
 	border: none;
-	width: 85%;
+	width: 80%;
 	height: 50px;
 	background-color: #aeb1b4;
 	outline: none;
@@ -40,7 +44,7 @@ form textarea {
 }
 form button {
 	border: none;
-	width: 15%;
+	width: 20%;
 	border-top-right-radius: 17px;
 	border-bottom-right-radius: 17px;
 	font-size: 17px;
@@ -52,12 +56,15 @@ form button {
 	text-align: center;
 	list-style-type: none;
 	padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
 }
 .todo-list li {
 	background: white;
 	padding: 10px;
 	margin: 5px auto;
-	width: 60%;
 	border-radius: 10px;
 	font-size: 17px;
 	display: flex;
@@ -65,6 +72,10 @@ form button {
 	align-items: center;
 	font-family: "Roboto", sans-serif;
 	white-space: pre-line;
+	max-width: 800px;
+	width: 90%;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+	flex-wrap: wrap;
 }
 .delete-btn {
 	background-color: red;
@@ -73,4 +84,30 @@ form button {
 	padding: 5px 10px;
 	cursor: pointer;
 	border-radius: 5px;
+	flex-shrink: 0;
+}
+
+@media screen and (max-width: 600px) {
+	form {
+		flex-direction: column;
+		align-items: center;
+	}
+	form textarea {
+		width: 100%;
+		border-radius: 10px;
+		margin-bottom: 10px;
+	}
+	form button {
+		width: 100%;
+		border-radius: 10px;
+	}
+	.todo-list li {
+		flex-direction: column;
+		text-align: left;
+		padding: 15px;
+	}
+	.delete-btn {
+		margin-top: 5px;
+		width: 100%;
+	}
 }

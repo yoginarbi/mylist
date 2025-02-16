@@ -11,16 +11,31 @@ updateDateTime();
 const todoForm = document.getElementById("todo-form");
 const todoInput = document.getElementById("todo-input");
 const todoList = document.getElementById("todo-list");
+const clearAllBtn = document.createElement("button");
+
+clearAllBtn.textContent = "Hapus Semua";
+clearAllBtn.classList.add("delete-btn");
+clearAllBtn.style.marginTop = "10px";
+clearAllBtn.style.backgroundColor = "darkred";
+clearAllBtn.style.width = "150px";
+clearAllBtn.style.display = "block";
+clearAllBtn.style.margin = "auto";
+clearAllBtn.addEventListener("click", function () {
+	localStorage.removeItem("todos");
+	todoList.innerHTML = "";
+});
+
+todoList.after(clearAllBtn);
 
 function loadTodos() {
 	const todos = JSON.parse(localStorage.getItem("todos")) || [];
-	todos.forEach((task) => addTodoToDOM(task));
+	todos.forEach(({ text, done }) => addTodoToDOM(text, done));
 }
 loadTodos();
 
 todoForm.addEventListener("submit", function (event) {
 	event.preventDefault();
-	let task = todoInput.value;
+	let task = todoInput.value.trim();
 	if (task) {
 		addTodoToDOM(task);
 		saveTodos();
@@ -28,17 +43,15 @@ todoForm.addEventListener("submit", function (event) {
 	}
 });
 
-function addTodoToDOM(task) {
+function addTodoToDOM(task, done = false) {
 	const li = document.createElement("li");
+
 	const textSpan = document.createElement("span");
 	textSpan.textContent = task;
 	textSpan.style.flexGrow = "1";
-	li.style.display = "flex";
-	li.style.alignItems = "center";
-	li.style.justifyContent = "space-between";
-	li.style.whiteSpace = "pre-line";
-	li.style.textAlign = "left";
-	li.style.width = "1000px";
+	textSpan.style.whiteSpace = "pre-line";
+	textSpan.style.textAlign = "left";
+	if (done) textSpan.style.textDecoration = "line-through";
 
 	const buttonContainer = document.createElement("div");
 	buttonContainer.style.display = "flex";
@@ -62,11 +75,7 @@ function addTodoToDOM(task) {
 	centangBtn.style.cursor = "pointer";
 	centangBtn.style.borderRadius = "5px";
 	centangBtn.addEventListener("click", function () {
-		if (textSpan.style.textDecoration === "line-through") {
-			textSpan.style.textDecoration = "none";
-		} else {
-			textSpan.style.textDecoration = "line-through";
-		}
+		textSpan.style.textDecoration = textSpan.style.textDecoration === "line-through" ? "none" : "line-through";
 		saveTodos();
 	});
 
@@ -76,9 +85,13 @@ function addTodoToDOM(task) {
 	li.appendChild(textSpan);
 	li.appendChild(buttonContainer);
 	todoList.appendChild(li);
+	saveTodos();
 }
 
 function saveTodos() {
-	const todos = Array.from(document.querySelectorAll(".todo-list li")).map((li) => li.firstChild.textContent);
+	const todos = Array.from(todoList.children).map((li) => ({
+		text: li.firstChild.textContent,
+		done: li.firstChild.style.textDecoration === "line-through",
+	}));
 	localStorage.setItem("todos", JSON.stringify(todos));
 }
