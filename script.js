@@ -30,10 +30,19 @@ todoForm.addEventListener("submit", function (event) {
 
 function addTodoToDOM(task) {
 	const li = document.createElement("li");
-	li.textContent = task;
+	const textSpan = document.createElement("span");
+	textSpan.textContent = task;
+	textSpan.style.flexGrow = "1";
+	li.style.display = "flex";
+	li.style.alignItems = "center";
+	li.style.justifyContent = "space-between";
 	li.style.whiteSpace = "pre-line";
 	li.style.textAlign = "left";
 	li.style.width = "1000px";
+
+	const buttonContainer = document.createElement("div");
+	buttonContainer.style.display = "flex";
+	buttonContainer.style.gap = "10px";
 
 	const deleteBtn = document.createElement("button");
 	deleteBtn.textContent = "Delete";
@@ -43,7 +52,29 @@ function addTodoToDOM(task) {
 		saveTodos();
 	});
 
-	li.appendChild(deleteBtn);
+	const centangBtn = document.createElement("button");
+	centangBtn.textContent = "Done";
+	centangBtn.classList.add("centang-btn");
+	centangBtn.style.backgroundColor = "green";
+	centangBtn.style.color = "white";
+	centangBtn.style.border = "none";
+	centangBtn.style.padding = "5px 10px";
+	centangBtn.style.cursor = "pointer";
+	centangBtn.style.borderRadius = "5px";
+	centangBtn.addEventListener("click", function () {
+		if (textSpan.style.textDecoration === "line-through") {
+			textSpan.style.textDecoration = "none";
+		} else {
+			textSpan.style.textDecoration = "line-through";
+		}
+		saveTodos();
+	});
+
+	buttonContainer.appendChild(deleteBtn);
+	buttonContainer.appendChild(centangBtn);
+
+	li.appendChild(textSpan);
+	li.appendChild(buttonContainer);
 	todoList.appendChild(li);
 }
 
